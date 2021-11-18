@@ -35,18 +35,26 @@ public class AnimeController {
     }//preguntar
 
     @PostMapping("/")
-    public String createAnime(@RequestBody Anime anime){//requestBody es que quieres que te envie toda la info
+    public ResponseEntity<?> createAnime(@RequestBody Anime anime){//requestBody es que quieres que te envie toda la info
+
         for(Anime a :animeRepository.findAll()){
-            if(anime.name.equals(animeRepository)){return "Ya existe un anime con este nombre";}
+            if(anime.name.equals(animeRepository)){return
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).body(Error.message("Ya existe un anime con este nombre"));}
         }
 
-        animeRepository.save(anime);
-        return String.valueOf(anime.animeid);//guarda la cosa que recibe
+        animeRepository.save(anime);//guarda la cosa que recibe
+        return ResponseEntity.ok().body(anime);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAnime(@PathVariable UUID id){
+    public ResponseEntity<?> deleteAnime(@PathVariable UUID id){
+        Anime file = animeRepository.findById(id).orElse(null);
 
+        if (file == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat l'anime amd id '"+id+"'"));}
+       //si no ha encontrado
+
+        animeRepository.delete(file);//elimina el anime con ese id
+        return ResponseEntity.ok().body("S''ha eliminat l'anime amb id '"+id+"'");//si sale bien (ok) devuelves body
     }
 
 }
