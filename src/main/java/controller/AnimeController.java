@@ -38,8 +38,8 @@ public class AnimeController {
     public ResponseEntity<?> createAnime(@RequestBody Anime anime){//requestBody es que quieres que te envie toda la info
 
         for(Anime a :animeRepository.findAll()){
-            if(anime.name.equals(animeRepository)){return
-                    ResponseEntity.status(HttpStatus.NO_CONTENT).body(Error.message("Ya existe un anime con este nombre"));}
+            if(anime.name.equals(a.name)){return
+                    ResponseEntity.status(HttpStatus.FOUND).body(Error.message("Ya existe un anime con este nombre"));}
         }
 
         animeRepository.save(anime);//guarda la cosa que recibe
