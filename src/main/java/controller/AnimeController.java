@@ -57,4 +57,6 @@ public class AnimeController {
         return ResponseEntity.ok().body("S''ha eliminat l'anime amb id '"+id+"'");//si sale bien (ok) devuelves body
     }
 
+
+
 }
