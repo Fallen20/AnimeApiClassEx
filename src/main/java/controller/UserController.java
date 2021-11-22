@@ -2,9 +2,7 @@ package controller;
 
 import domain.dto.Error;
 import domain.dto.ResponseUser;
-import domain.model.Anime;
 import domain.model.Users;
-import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
