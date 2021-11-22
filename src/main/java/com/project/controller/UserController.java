@@ -26,14 +26,14 @@ public class UserController {
     }//devuelve mal, no debe devolver contraseña
 
     @PostMapping("/")
-    public ResponseEntity<?> createAnime(@RequestBody Users users){//requestBody es que quieres que te envie toda la info
+    public ResponseEntity<?> createAUser(@RequestBody Users users){//requestBody es que quieres que te envie toda la info
 
         for(Users a :userRepository.findAll()){
             if(users.username.equals(a.username)){return ResponseEntity.status(HttpStatus.FOUND).body(Error.message("Ya existe un usuario con este nombre"));}
         }
 
         userRepository.save(users);//guarda la cosa que recibe
-        return ResponseEntity.ok().body(users);//devuelve mal, no debe devolver id
+        return ResponseEntity.ok().body(users);//devuelve mal, no debe devolver contra
     }
 
     @DeleteMapping("/{id}")
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @DeleteMapping("/")
-    public void deleteAllAnime(){
+    public void deleteAllUsers(){
         userRepository.deleteAll();
     }
 }

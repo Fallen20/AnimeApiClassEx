@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import com.project.domain.dto.Error;
+import com.project.domain.dto.FilePequn;
 import com.project.domain.dto.ResponseFile;
 import com.project.domain.model.FileTable;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.project.repository.FileRepository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,15 +23,15 @@ public class FileController {
     public FileController(FileRepository fileRepository) {this.fileRepository = fileRepository;}
 
     @GetMapping("/")
-    public ResponseFile showFiles(){
-        return new ResponseFile(fileRepository.findAll());
+    public ResponseEntity<?> showFiles(){
+        return ResponseEntity.ok().body(fileRepository.getFilePequns());
     }
 
     @GetMapping("/{id}")//si es get a /files/NUMERO, NUMERO se llama ID
-    public ResponseEntity<byte[]> getFile(@PathVariable UUID id){
+    public ResponseEntity<?> getFile(@PathVariable UUID id){
         FileTable file = fileRepository.findById(id).orElse(null);
 
-        if (file == null) return ResponseEntity.notFound().build();
+        if (file == null){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No s'ha trobat l'arxiu amd id '"+id+"'");}//no sale
 
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(file.contenttype))
@@ -36,13 +40,23 @@ public class FileController {
     }
 
     @PostMapping
-    public ResponseEntity<?> uploadFile(@RequestParam FileTable file){
-        fileRepository.save(file);
-        return ResponseEntity.ok().body(file);
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile uploadedFile) {
+        try {
+            FileTable file = new FileTable();
+            file.contenttype = uploadedFile.getContentType();
+            file.data = uploadedFile.getBytes();
+            fileRepository.save(file);//lo guardas
+            return ResponseEntity.ok().body("{\n\t\"fileid\":\""+file.fileid+"\",\n\t\"contenttype\":\""+file.contenttype+"\"\n}");
+            //esto no puede ser asi de cutre
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAnime(@PathVariable UUID id){
+    public ResponseEntity<?> deleteFile(@PathVariable UUID id){
         FileTable file = fileRepository.findById(id).orElse(null);
 
         if (file == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat l'arxiu amd id '"+id+"'"));}
@@ -54,7 +68,7 @@ public class FileController {
 
 
     @DeleteMapping("/")
-    public void deleteAllAnime(){
+    public void deleteAllUsers(){
         fileRepository.deleteAll();
 
     }
