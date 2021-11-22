@@ -46,7 +46,9 @@ public class FileController {
             file.contenttype = uploadedFile.getContentType();
             file.data = uploadedFile.getBytes();
             fileRepository.save(file);//lo guardas
-            return ResponseEntity.ok().body("{\n\t\"fileid\":\""+file.fileid+"\",\n\t\"contenttype\":\""+file.contenttype+"\"\n}");
+
+
+            return ResponseEntity.ok().body(fileRepository.getFilePequns());
             //esto no puede ser asi de cutre
 
         } catch (Exception e) {
