@@ -1,4 +1,4 @@
-package com.project.domain.dto;
+package com.project.domain.dto;GET
 
 import com.project.domain.model.Anime;
 

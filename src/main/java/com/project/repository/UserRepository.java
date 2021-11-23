@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<Users, UUID> {
     @Query("select fileid from FileTable")
     List<String> getFileIds();
+
+    Users findByUsername(String username);
 }

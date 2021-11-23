@@ -1,6 +1,6 @@
 package com.project.repository;
 
-import com.project.domain.dto.FilePequn;
+import com.project.domain.dto.FileDetails;
 import com.project.domain.model.FileTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ public interface FileRepository extends JpaRepository<FileTable, UUID> {//quien 
     // la tabla y el tipo de dato de la clave primaria
     //con interface genera la clase por cada consulta
 
-    @Query("select fileid, contenttype from FileTable")
-    List<FilePequn> getFilePequns();
+    @Query("select new com.project.domain.dto.FileDetails(fileid, contenttype) from FileTable")
+    List<FileDetails> getAll();
 
 }

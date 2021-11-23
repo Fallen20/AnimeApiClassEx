@@ -3,9 +3,11 @@ package com.project.controller;
 import com.project.domain.dto.Error;
 import com.project.domain.dto.ResponseUser;
 import com.project.domain.model.Users;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.project.repository.UserRepository;
 
 import java.util.UUID;
@@ -15,6 +17,9 @@ import java.util.UUID;
 public class UserController {
 
     private final UserRepository userRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
 
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -32,8 +37,15 @@ public class UserController {
             if(users.username.equals(a.username)){return ResponseEntity.status(HttpStatus.FOUND).body(Error.message("Ya existe un usuario con este nombre"));}
         }
 
-        userRepository.save(users);//guarda la cosa que recibe
-        return ResponseEntity.ok().body(users);//devuelve mal, no debe devolver contra
+        if (userRepository.findByUsername(users.username) == null) {
+            Users userNuevo = new Users();
+            userNuevo.username = users.username;
+            userNuevo.password = passwordEncoder.encode(users.password);
+            userRepository.save(userNuevo);
+            return ResponseEntity.ok().body(users);//devuelve mal, no debe devolver contra
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR");
+
     }
 
     @DeleteMapping("/{id}")

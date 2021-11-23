@@ -1,8 +1,6 @@
 package com.project.controller;
 
 import com.project.domain.dto.Error;
-import com.project.domain.dto.FilePequn;
-import com.project.domain.dto.ResponseFile;
 import com.project.domain.model.FileTable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import com.project.repository.FileRepository;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -24,8 +20,8 @@ public class FileController {
 
     @GetMapping("/")
     public ResponseEntity<?> showFiles(){
-        return ResponseEntity.ok().body(fileRepository.getFilePequns());
-    }
+        return ResponseEntity.ok().body(fileRepository.getAll());
+    }//bien
 
     @GetMapping("/{id}")//si es get a /files/NUMERO, NUMERO se llama ID
     public ResponseEntity<?> getFile(@PathVariable UUID id){
@@ -37,7 +33,7 @@ public class FileController {
                 .contentType(MediaType.valueOf(file.contenttype))
                 .contentLength(file.data.length)
                 .body(file.data);
-    }
+    }//bien
 
     @PostMapping
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile uploadedFile) {
@@ -47,9 +43,7 @@ public class FileController {
             file.data = uploadedFile.getBytes();
             fileRepository.save(file);//lo guardas
 
-
-            return ResponseEntity.ok().body(fileRepository.getFilePequns());
-            //esto no puede ser asi de cutre
+            return ResponseEntity.ok().body(fileRepository.getById(file.fileid));//sale data, no deberia
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,11 +60,11 @@ public class FileController {
 
         fileRepository.delete(file);//elimina el anime con ese id
         return ResponseEntity.ok().body("S''ha eliminat l'anime amb id '"+id+"'");//si sale bien (ok) devuelves body
-    }
+    }//ok
 
 
     @DeleteMapping("/")
-    public void deleteAllUsers(){
+    public void deleteAllFiles(){
         fileRepository.deleteAll();
 
     }
