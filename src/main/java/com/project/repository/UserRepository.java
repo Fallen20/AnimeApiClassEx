@@ -1,5 +1,6 @@
 package com.project.repository;
 
+import com.project.domain.dto.UserDetails;
 import com.project.domain.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,8 +10,9 @@ import java.util.UUID;
 
 //consultas
 public interface UserRepository extends JpaRepository<Users, UUID> {
-    @Query("select fileid from FileTable")
-    List<String> getFileIds();
+
+    @Query("select new com.project.domain.dto.UserDetails(userid, username) from Users")
+    List<UserDetails> getUsers();
 
     Users findByUsername(String username);
 }
