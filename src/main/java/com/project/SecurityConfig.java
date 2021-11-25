@@ -34,6 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //to lo que coincida con esto, lo permite
                 .mvcMatchers("/files/").permitAll()
                 .mvcMatchers("/files/{id}").permitAll()
+                .mvcMatchers("/users/").permitAll()
+                .mvcMatchers("/users/{id}").permitAll()
                 .anyRequest()//cualquier cosa que no sea lo de arriba
                 .authenticated()//es solo para users autenticados
                 .and()//y

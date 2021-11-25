@@ -12,7 +12,7 @@ public interface FileRepository extends JpaRepository<FileTable, UUID> {//quien 
     // la tabla y el tipo de dato de la clave primaria
     //con interface genera la clase por cada consulta
 
-    @Query("select new com.project.domain.dto.FileDetails(fileid, contenttype) from FileTable")
-    List<FileDetails> getAll();
+    //@Query("select new com.project.domain.dto.FileDetails(fileid, contenttype) from FileTable")
+    List<FileDetails> findBy();
 
 }

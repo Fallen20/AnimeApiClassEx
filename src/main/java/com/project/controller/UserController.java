@@ -1,7 +1,7 @@
 package com.project.controller;
 
 import com.project.domain.dto.Error;
-import com.project.domain.dto.ResponseUser;
+import com.project.domain.dto.UserResult;
 import com.project.domain.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseUser showUsers(){
-        return new ResponseUser(userRepository.findAll());
+    public ResponseEntity<?> showUsers(){
+        return ResponseEntity.ok().body(userRepository.findBy());
     }//devuelve mal, no debe devolver contraseña
 
     @PostMapping("/")
@@ -42,21 +42,24 @@ public class UserController {
             userNuevo.username = users.username;
             userNuevo.password = passwordEncoder.encode(users.password);
             userRepository.save(userNuevo);
-            return ResponseEntity.ok().body(users);//devuelve mal, no debe devolver contra
+
+            UserResult userResult=new UserResult(userNuevo.userid,userNuevo.username);
+
+            return ResponseEntity.ok().body(userResult);//OK
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR");
 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> elimiarUser(@PathVariable UUID id){
+    public ResponseEntity<?> eliminarUser(@PathVariable UUID id){
         Users file = userRepository.findById(id).orElse(null);
 
-        if (file == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat l'anime amd id '"+id+"'"));}
+        if (file == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat l'usuari amd id '"+id+"'"));}
         //si no ha encontrado
 
         userRepository.delete(file);//elimina el anime con ese id
-        return ResponseEntity.ok().body("S'ha eliminat l'anime amb id '"+id+"'");//si sale bien (ok) devuelves body
+        return ResponseEntity.ok().body("S'ha eliminat l'usuari amb id '"+id+"'");//si sale bien (ok) devuelves body
     }
 
     @DeleteMapping("/")

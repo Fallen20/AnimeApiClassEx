@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import com.project.domain.dto.Error;
+import com.project.domain.dto.FileResult;
 import com.project.domain.model.FileTable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +21,7 @@ public class FileController {
 
     @GetMapping("/")
     public ResponseEntity<?> showFiles(){
-        return ResponseEntity.ok().body(fileRepository.getAll());
+        return ResponseEntity.ok().body(fileRepository.findBy());
     }//bien
 
     @GetMapping("/{id}")//si es get a /files/NUMERO, NUMERO se llama ID
@@ -41,9 +42,12 @@ public class FileController {
             FileTable file = new FileTable();
             file.contenttype = uploadedFile.getContentType();
             file.data = uploadedFile.getBytes();
+
             fileRepository.save(file);//lo guardas
 
-            return ResponseEntity.ok().body(fileRepository.getById(file.fileid));//sale data, no deberia
+            FileResult fileResult = new FileResult(file.fileid, file.contenttype);
+
+            return ResponseEntity.ok().body(fileResult);
 
         } catch (Exception e) {
             e.printStackTrace();

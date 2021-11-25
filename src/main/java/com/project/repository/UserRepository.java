@@ -11,8 +11,8 @@ import java.util.UUID;
 //consultas
 public interface UserRepository extends JpaRepository<Users, UUID> {
 
-    @Query("select new com.project.domain.dto.UserDetails(userid, username) from Users")
-    List<UserDetails> getUsers();
+   // @Query("select new com.project.domain.dto.UserDetails(userid, username) from Users")
+    List<UserDetails> findBy();
 
     Users findByUsername(String username);
 }
