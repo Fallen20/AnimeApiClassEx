@@ -49,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .jdbcAuthentication()//autentica
                 .dataSource(dataSource)//cual es mi base de datos
-                .usersByUsernameQuery("select username, password, enabled from users where username = ?")
-                .authoritiesByUsernameQuery("select username, role from users where username = ?")
+                .usersByUsernameQuery("select username, password, true as enabled from users where username = ?")
+                .authoritiesByUsernameQuery("select username, 'user' as role from users where username = ?")
                 //dime el user y el rol del usuario. UN string con ese rol
                 .passwordEncoder(getPasswordEncoder());//crea el usuario y te dice como va a encriptar el pass
     }
