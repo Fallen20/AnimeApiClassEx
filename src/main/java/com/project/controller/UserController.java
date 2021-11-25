@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import com.project.domain.dto.Error;
+import com.project.domain.dto.ListResult;
 import com.project.domain.dto.UserResult;
 import com.project.domain.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> showUsers(){
-        return ResponseEntity.ok().body(userRepository.findBy());
+    public ListResult showUsers(){
+        return new ListResult(userRepository.findBy());
     }//devuelve mal, no debe devolver contraseña
 
     @PostMapping("/")
@@ -59,7 +60,7 @@ public class UserController {
         //si no ha encontrado
 
         userRepository.delete(file);//elimina el anime con ese id
-        return ResponseEntity.ok().body("S'ha eliminat l'usuari amb id '"+id+"'");//si sale bien (ok) devuelves body
+        return ResponseEntity.ok().body(Error.message("S'ha eliminat l'usuari amb id '"+id+"'"));//si sale bien (ok) devuelves body
     }
 
     @DeleteMapping("/")

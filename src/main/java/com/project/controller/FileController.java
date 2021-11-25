@@ -2,6 +2,7 @@ package com.project.controller;
 
 import com.project.domain.dto.Error;
 import com.project.domain.dto.FileResult;
+import com.project.domain.dto.ListResult;
 import com.project.domain.model.FileTable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,8 +21,8 @@ public class FileController {
     public FileController(FileRepository fileRepository) {this.fileRepository = fileRepository;}
 
     @GetMapping("/")
-    public ResponseEntity<?> showFiles(){
-        return ResponseEntity.ok().body(fileRepository.findBy());
+    public ListResult showFiles(){
+        return new ListResult(fileRepository.findBy());
     }//bien
 
     @GetMapping("/{id}")//si es get a /files/NUMERO, NUMERO se llama ID
@@ -63,7 +64,7 @@ public class FileController {
         //si no ha encontrado
 
         fileRepository.delete(file);//elimina el anime con ese id
-        return ResponseEntity.ok().body("S''ha eliminat l'anime amb id '"+id+"'");//si sale bien (ok) devuelves body
+        return ResponseEntity.ok().body(Error.message("S'ha eliminat l'anime amb id '"+id+"'"));//si sale bien (ok) devuelves body
     }//ok
 
 

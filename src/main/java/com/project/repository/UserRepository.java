@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<Users, UUID> {
 
    // @Query("select new com.project.domain.dto.UserDetails(userid, username) from Users")
-    List<UserDetails> findBy();
+    List<UserDetails> findBy();//en funcion del retorno devuelve una cosa u otra
 
     Users findByUsername(String username);
 }

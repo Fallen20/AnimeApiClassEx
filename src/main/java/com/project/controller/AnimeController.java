@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import com.project.domain.dto.Error;
+import com.project.domain.dto.ListResult;
 import com.project.domain.dto.ResponseAnime;
 import com.project.domain.model.Anime;
 import org.springframework.http.HttpStatus;
@@ -20,8 +21,8 @@ public class AnimeController {
     }
 
     @GetMapping("/")
-    public ResponseAnime showAnimeJSON(){//devuelve la lista pero en JSON
-        return new ResponseAnime(animeRepository.findAll());
+    public ListResult showAnimeJSON(){//devuelve la lista pero en JSON
+        return new ListResult(animeRepository.findAll());
     }//get /anime/ > devuelve la lista de animes
 
     @GetMapping("/{id}")
