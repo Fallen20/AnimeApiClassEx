@@ -29,7 +29,7 @@ public class FileController {
     public ResponseEntity<?> getFile(@PathVariable UUID id){
         FileTable file = fileRepository.findById(id).orElse(null);
 
-        if (file == null){return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No s'ha trobat l'arxiu amd id '"+id+"'");}//no sale
+        if (file == null){return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat l'arxiu amd id '"+id+"'"));}//no sale
 
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(file.contenttype))

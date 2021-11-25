@@ -53,7 +53,7 @@ public class AnimeController {
        //si no ha encontrado
 
         animeRepository.delete(file);//elimina el anime con ese id
-        return ResponseEntity.ok().body("S''ha eliminat l'anime amb id '"+id+"'");//si sale bien (ok) devuelves body
+        return ResponseEntity.ok().body(Error.message("S''ha eliminat l'anime amb id '"+id+"'"));//si sale bien (ok) devuelves body
     }
 
 
