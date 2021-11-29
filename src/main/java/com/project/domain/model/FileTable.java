@@ -17,4 +17,6 @@ public class FileTable {
     @Lob //large object
     @Type(type="org.hibernate.type.BinaryType")
     public byte[] data;
+
 }
+
