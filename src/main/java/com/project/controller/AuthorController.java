@@ -23,7 +23,7 @@ public class AuthorController {
     }//get /anime/ > devuelve la lista de autores
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getIndividualAnime(@PathVariable UUID id){
+    public ResponseEntity<?> getIndividualAuthor(@PathVariable UUID id){
         Author file = authorRepository.findById(id).orElse(null);
 
         if (file == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat l'autor amd id '"+id+"'"));}
@@ -32,3 +32,5 @@ public class AuthorController {
 
 
 }
+
+//./gradlew flywayClean -Dflyway.url=$JDBC_DATABASE_URL
