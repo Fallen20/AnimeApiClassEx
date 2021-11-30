@@ -31,7 +31,7 @@ public class AnimeController {
 
         if (file == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat l'anime amd id '"+id+"'"));}
         return ResponseEntity.ok().body(file);//si sale bien (ok) devuelves body
-    }//preguntar
+    }
 
     @PostMapping("/")
     public ResponseEntity<?> createAnime(@RequestBody Anime anime){//requestBody es que quieres que te envie toda la info

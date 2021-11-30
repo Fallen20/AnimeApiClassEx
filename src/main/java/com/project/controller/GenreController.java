@@ -16,7 +16,7 @@ public class GenreController {
     @GetMapping("/")
     public ListResult showAnimeJSON(){//devuelve la lista pero en JSON
         return new ListResult(genresRepository.findAll());
-    }//get /anime/ > devuelve la lista de animes
+    }//get /anime/ > devuelve la lista de generos
 
 
 
