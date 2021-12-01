@@ -23,9 +23,9 @@ public class FileController {
     @GetMapping("/")
     public ListResult showFiles(){
         return new ListResult(fileRepository.findBy());
-    }//bien
+    }
 
-    @GetMapping("/{id}")//si es get a /files/NUMERO, NUMERO se llama ID
+    @GetMapping("/{id}")
     public ResponseEntity<?> getFile(@PathVariable UUID id){
         FileTable file = fileRepository.findById(id).orElse(null);
 
@@ -35,7 +35,7 @@ public class FileController {
                 .contentType(MediaType.valueOf(file.contenttype))
                 .contentLength(file.data.length)
                 .body(file.data);
-    }//bien
+    }
 
     @PostMapping
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile uploadedFile) {
@@ -65,7 +65,7 @@ public class FileController {
 
         fileRepository.delete(file);//elimina el anime con ese id
         return ResponseEntity.ok().body(Error.message("S'ha eliminat l'anime amb id '"+id+"'"));//si sale bien (ok) devuelves body
-    }//ok
+    }
 
 
     @DeleteMapping("/")

@@ -19,7 +19,7 @@ public class AuthorController {
 
     @GetMapping("/")
     public ResponseEntity<?> showAuthorJSON(){//devuelve la lista pero en JSON
-        return ResponseEntity.ok().body(new ListResult(authorRepository.findAll()));
+        return ResponseEntity.ok().body(new ListResult(authorRepository.findBy()));
     }//get /anime/ > devuelve la lista de autores
 
     @GetMapping("/{id}")

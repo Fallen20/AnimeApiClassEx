@@ -21,8 +21,8 @@ public class AnimeController {
     }
 
     @GetMapping("/")
-    public ListResult showAnimeJSON(){//devuelve la lista pero en JSON
-        return new ListResult(animeRepository.findAll());
+    public ResponseEntity<?> showAnimeJSON(){//devuelve la lista pero en JSON
+        return ResponseEntity.ok().body(new ListResult(animeRepository.findAll()));
     }//get /anime/ > devuelve la lista de animes
 
     @GetMapping("/{id}")

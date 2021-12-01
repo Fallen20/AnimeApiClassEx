@@ -23,15 +23,15 @@ public class GenreController {
 
     @GetMapping("/")
     public ListResult showGenreJSON(){//devuelve la lista pero en JSON
-        return new ListResult(genresRepository.findAll());
-    }//get /anime/ > devuelve la lista de generos
+        return new ListResult(genresRepository.findBy());
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getIndividualGenre(@PathVariable UUID id){
         Genres file = genresRepository.findById(id).orElse(null);
 
         if (file == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat el genere amd id '"+id+"'"));}
-        return ResponseEntity.ok().body(file);//si sale bien (ok) devuelves body
+        return ResponseEntity.ok().body(file);
     }
 
 
