@@ -1,5 +1,7 @@
 package com.project.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
@@ -24,6 +26,7 @@ public class Anime {
     //2>el campo que usa de esta tabla (cuando pide los animes del author)
     //3>el campo que usa de la otra tabla (cuando pide los author de los animes)
 
+    @JsonIgnoreProperties("animes")
     public Set<Author> authors; //el set ha de ser del otro tipo de tabla
     //con esto obtenemos los autores de los animes
 
@@ -33,6 +36,7 @@ public class Anime {
     //2>el campo que usa de esta tabla (cuando pide los animes del author)
     //3>el campo que usa de la otra tabla (cuando pide los author de los animes)
 
+    @JsonIgnoreProperties("animes")
     public Set<Genres> genres; //el set ha de ser del otro tipo de tabla
     //con esto obtenemos los autores de los animes
 }

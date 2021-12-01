@@ -18,4 +18,7 @@ public interface ProjectionAnimes {
     //para pararlo le pones que ignore animes (getAnimes): pilla animes>va a author>hemos dicho que ignore anime asiq ue
     //pide una vez anime aqui y author alli y para
     Set<ProjectionAuthor> getAuthors();
+
+    @JsonIgnoreProperties("animes")//si no le pones esto, entra el set de abajo. Y vuelve a pedir animes. Y vuelve aqui.
+    Set<ProjectionGenres> getGenres();
 }

@@ -1,5 +1,7 @@
 package com.project.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
@@ -17,6 +19,7 @@ public class Author {
 
     @ManyToMany(mappedBy = "authors")//el nombre es el set del jointable
     //mappedby es que ya esta hecha la relacion y no hace falta repetir todo
+    @JsonIgnoreProperties("authors")
     public Set<Anime> animes; //como lo devuelve, el set ha de ser del otro tipo de tabla
     //con esto obtenemos los animes del autor
 
