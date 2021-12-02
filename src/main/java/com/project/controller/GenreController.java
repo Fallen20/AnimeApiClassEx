@@ -2,8 +2,9 @@ package com.project.controller;
 
 import com.project.domain.dto.Error;
 import com.project.domain.dto.ListResult;
-import com.project.domain.model.Author;
 import com.project.domain.model.Genres;
+import com.project.domain.model.projection.ProjectionGenresLimited;
+import com.project.domain.model.projection.ProjectionGenresLimitedId;
 import com.project.repository.GenresRespository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,16 @@ public class GenreController {
     public GenreController(GenresRespository genresRepository) {this.genresRepository = genresRepository;}
 
     @GetMapping("/")
-    public ListResult showGenreJSON(){//devuelve la lista pero en JSON
-        return new ListResult(genresRepository.findBy());
+    public ResponseEntity<?> showGenreJSON(){//devuelve la lista pero en JSON
+        return ResponseEntity.ok().body(new ListResult(genresRepository.findBy(ProjectionGenresLimited.class)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getIndividualGenre(@PathVariable UUID id){
-        Genres file = genresRepository.findById(id).orElse(null);
+        ProjectionGenresLimitedId genre = genresRepository.findByGenreid(id, ProjectionGenresLimitedId.class);
 
-        if (file == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat el genere amd id '"+id+"'"));}
-        return ResponseEntity.ok().body(file);
+        if (genre == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat el genere amd id '"+id+"'"));}
+        return ResponseEntity.ok().body(genre);
     }
 
 

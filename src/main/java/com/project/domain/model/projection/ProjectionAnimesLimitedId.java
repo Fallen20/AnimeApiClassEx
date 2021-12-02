@@ -22,6 +22,4 @@ public interface ProjectionAnimesLimitedId {
     //pide una vez anime aqui y author alli y para
     Set<ProjectionAuthorLimitedId> getAuthors();
 
-    @JsonIgnoreProperties("animes")//si no le pones esto, entra el set de abajo. Y vuelve a pedir animes. Y vuelve aqui.
-    Set<ProjectionGenresLimitedId> getGenres();
 }
