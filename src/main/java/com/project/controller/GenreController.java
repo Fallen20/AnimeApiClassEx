@@ -30,6 +30,7 @@ public class GenreController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getIndividualGenre(@PathVariable UUID id){
         ProjectionGenresLimitedId genre = genresRepository.findByGenreid(id, ProjectionGenresLimitedId.class);
+        //le enviamos por lo que busca (id) y la clase con la que va a usar el modelo para construir el objeto
 
         if (genre == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat el genere amd id '"+id+"'"));}
         return ResponseEntity.ok().body(genre);

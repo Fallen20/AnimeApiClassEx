@@ -13,6 +13,7 @@ public interface GenresRespository extends JpaRepository<Genres, UUID> {
 
     <T> T findByGenreid(UUID genreid, Class<T> type);
     <T> List<T> findBy(Class<T> type);
+    //T es una clase generica, se dapta a todos
 
 
     //List<ProjectionGenresLimitedId> findBy();
