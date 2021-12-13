@@ -1,6 +1,9 @@
 package com.project.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -12,4 +15,8 @@ public class Users {
 
     public String username;
     public String password;
+
+    @ManyToMany(mappedBy = "favouritedBy")
+    @JsonIgnoreProperties("favouritedBy")
+    public Set<Anime> favourites;
 }

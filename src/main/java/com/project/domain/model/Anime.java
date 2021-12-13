@@ -30,14 +30,16 @@ public class Anime {
     public Set<Author> authors; //el set ha de ser del otro tipo de tabla
     //con esto obtenemos los autores de los animes
 
-    @ManyToMany//esto es para la relacion
+    @ManyToMany
     @JoinTable(name="genres_movie_relation", joinColumns = @JoinColumn(name="animeid"), inverseJoinColumns = @JoinColumn(name = "genreid"))
-    //1> el nombre de la tabla que une tablas
-    //2>el campo que usa de esta tabla (cuando pide los animes del author)
-    //3>el campo que usa de la otra tabla (cuando pide los author de los animes)
-
     @JsonIgnoreProperties("animes")
-    public Set<Genres> genres; //el set ha de ser del otro tipo de tabla
-    //con esto obtenemos los autores de los animes
+    public Set<Genres> genres;
+
+
+    @ManyToMany
+    @JoinTable(name="fav_animes_from_user", joinColumns = @JoinColumn(name="animeid"), inverseJoinColumns = @JoinColumn(name = "userid"))
+    @JsonIgnoreProperties("favourites")
+    public Set<Users> favouritedBy;//si le pones solo user te confundes porque pueden haber +1
+
 }
 
