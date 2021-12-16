@@ -55,7 +55,7 @@ public class UserController {
             userNuevo.password = passwordEncoder.encode(users.password);
             userRepository.save(userNuevo);
 
-            return ResponseEntity.ok().body(userRepository.findByUserid(userNuevo.userid, ProjectionCreateUser.class));//OK
+            return ResponseEntity.ok().body(userRepository.findByUserid(userNuevo.userid, ProjectionCreateUser.class));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR");
 
@@ -93,7 +93,7 @@ public class UserController {
         //como puede pasar el id del user que quieras, tenemos que pedir la autenticacion
         //autenticacion==id del json
 
-        if(userRepository.findByUsername(authentication.getName()).equals(favourite.userid)){
+        if(userRepository.findByUsername(authentication.getName()).userid.equals(favourite.userid)){
             favoritesRepository.save(favourite);//esto solo lo guarda en el repositorio, no en el user
             return ResponseEntity.ok().body("El anime se ha guardado en los favoritos del user");
         }
