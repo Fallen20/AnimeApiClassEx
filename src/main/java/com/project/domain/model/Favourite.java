@@ -16,4 +16,6 @@ public class Favourite {
     public UUID userid;
     @Id
     public UUID animeid;
+
+    public String image;
 }
