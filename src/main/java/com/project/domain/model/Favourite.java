@@ -12,10 +12,11 @@ import java.util.UUID;
 @Table(name="fav_animes_from_user")
 @IdClass(FavouriteIdClass.class)
 public class Favourite {
+
     @Id
     public UUID userid;
     @Id
     public UUID animeid;
 
-    public String image;
+
 }

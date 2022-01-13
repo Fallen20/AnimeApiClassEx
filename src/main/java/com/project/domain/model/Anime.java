@@ -20,7 +20,7 @@ public class Anime {
     public String image;
 
 
-    @ManyToMany//esto es para la relacion
+    @ManyToMany(cascade = CascadeType.ALL)//esto es para la relacion
     @JoinTable(name="author_movie_relation", joinColumns = @JoinColumn(name="animeid"), inverseJoinColumns = @JoinColumn(name = "authorid"))
     //1> el nombre de la tabla que une tablas
     //2>el campo que usa de esta tabla (cuando pide los animes del author)
@@ -30,13 +30,13 @@ public class Anime {
     public Set<Author> authors; //el set ha de ser del otro tipo de tabla
     //con esto obtenemos los autores de los animes
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="genres_movie_relation", joinColumns = @JoinColumn(name="animeid"), inverseJoinColumns = @JoinColumn(name = "genreid"))
     @JsonIgnoreProperties("animes")
     public Set<Genres> genres;
 
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="fav_animes_from_user", joinColumns = @JoinColumn(name="animeid"), inverseJoinColumns = @JoinColumn(name = "userid"))
     @JsonIgnoreProperties("favourites")
     public Set<Users> favouritedBy;//si le pones solo user te confundes porque pueden haber +1

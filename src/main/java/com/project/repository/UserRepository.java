@@ -2,7 +2,6 @@ package com.project.repository;
 
 import com.project.domain.model.Users;
 import com.project.domain.model.projection.ProyectionUser;
-import com.project.domain.model.projection.ProyectionUserDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,5 +14,8 @@ public interface UserRepository extends JpaRepository<Users, UUID> {
     List<ProyectionUser> findBy();//en funcion del retorno devuelve una cosa u otra
 
     <T> List<T> findByUserid(UUID id, Class<T> type);//este metodo ya existe por defecto tienes que hacerlo generico para poder usarlo y devolver como quieres
+
     Users findByUsername(String username);
+
+    <T> T findByUsername(String name, Class<T> type);
 }

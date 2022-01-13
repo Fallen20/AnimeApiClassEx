@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/files/{id}").permitAll()
                 .mvcMatchers("/users/").permitAll()
                 .mvcMatchers("/users/{id}").permitAll()
-                .mvcMatchers("/users/**/favorites").authenticated()
+                .mvcMatchers("/users/favorites").authenticated()
                 .mvcMatchers("/animes/").permitAll()
                 .mvcMatchers("/animes/{id}").permitAll()
                 .mvcMatchers("/authors/").permitAll()

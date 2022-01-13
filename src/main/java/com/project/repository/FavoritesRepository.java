@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface FavoritesRepository extends JpaRepository<Favourite, UUID> {
     List<Favourite> findBy();
 
+    <T> T findByUserid(UUID userid, Class<T> type);
+
 }

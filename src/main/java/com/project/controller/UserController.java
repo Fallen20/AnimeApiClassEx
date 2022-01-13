@@ -1,19 +1,17 @@
 package com.project.controller;
 
 import com.project.domain.dto.Error;
-import com.project.domain.model.Favourite;
 import com.project.domain.dto.ListResult;
 import com.project.domain.model.Users;
 import com.project.domain.model.projection.ProjectionCreateUser;
 import com.project.domain.model.projection.ProyectionUserDetail;
 import com.project.repository.FavoritesRepository;
+import com.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import com.project.repository.UserRepository;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -83,7 +81,7 @@ public class UserController {
     //el endpoint es importante
     //se ha de pasar el id y el id del anime a hacer fav
 
-    @PostMapping("/{id}/favorites")
+    /*@PostMapping("/{id}/favorites")
     public ResponseEntity<?> addFav(@RequestBody Favourite favourite, Authentication authentication){
         //pasar un obj fav que contenga el user y el anime id
         //tenemos que crear un repositorio +tabla para guardarlo
@@ -94,6 +92,8 @@ public class UserController {
         //autenticacion==id del json
 
         if(userRepository.findByUsername(authentication.getName()).userid.equals(favourite.userid)){
+
+
             favoritesRepository.save(favourite);//esto solo lo guarda en el repositorio, no en el user
             return ResponseEntity.ok().body("El anime se ha guardado en los favoritos del user");
         }
@@ -103,5 +103,5 @@ public class UserController {
 
 
 
-    }
+    }*/
 }
