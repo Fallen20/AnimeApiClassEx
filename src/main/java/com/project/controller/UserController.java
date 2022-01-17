@@ -2,7 +2,7 @@ package com.project.controller;
 
 import com.project.domain.dto.Error;
 import com.project.domain.dto.ListResult;
-import com.project.domain.model.Users;
+import com.project.domain.model.User;
 import com.project.domain.model.projection.ProjectionCreateUser;
 import com.project.domain.model.projection.ProyectionUserDetail;
 import com.project.repository.FavoritesRepository;
@@ -41,14 +41,14 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createAUser(@RequestBody Users users){//requestBody es que quieres que te envie toda la info
+    public ResponseEntity<?> createAUser(@RequestBody User users){//requestBody es que quieres que te envie toda la info
 
-        for(Users a :userRepository.findAll()){
+        for(User a :userRepository.findAll()){
             if(users.username.equals(a.username)){return ResponseEntity.status(HttpStatus.FOUND).body(Error.message("Ya existe un usuario con este nombre"));}
         }
 
         if (userRepository.findByUsername(users.username) == null) {
-            Users userNuevo = new Users();
+            User userNuevo = new User();
             userNuevo.username = users.username;
             userNuevo.password = passwordEncoder.encode(users.password);
             userRepository.save(userNuevo);
@@ -61,7 +61,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUser(@PathVariable UUID id){
-        Users file = userRepository.findById(id).orElse(null);
+        User file = userRepository.findById(id).orElse(null);
 
         if (file == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No s'ha trobat l'usuari amd id '"+id+"'"));}
         //si no ha encontrado

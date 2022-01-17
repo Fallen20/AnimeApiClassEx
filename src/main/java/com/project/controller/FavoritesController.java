@@ -6,7 +6,7 @@ import com.project.domain.dto.Message;
 import com.project.domain.dto.RequestFavorite;
 import com.project.domain.model.Anime;
 import com.project.domain.model.Favourite;
-import com.project.domain.model.Users;
+import com.project.domain.model.User;
 import com.project.domain.model.projection.ProjectionGetUserFavs;
 import com.project.repository.AnimeRepository;
 import com.project.repository.FavoritesRepository;
@@ -56,7 +56,7 @@ public class FavoritesController {
         else{
             if(authentication.getName()!=null){
                 Favourite fav=new Favourite();
-                Users authenticatedUser = userRepository.findByUsername(authentication.getName());
+                User authenticatedUser = userRepository.findByUsername(authentication.getName());
 
 
                 fav.userid=authenticatedUser.userid;
@@ -88,7 +88,7 @@ public class FavoritesController {
 
             //si existe
             if(encontrado){
-                Users authenticatedUser = userRepository.findByUsername(authentication.getName());
+                User authenticatedUser = userRepository.findByUsername(authentication.getName());
 
                 Favourite fav=new Favourite();
                 fav.animeid=id;

@@ -2,11 +2,9 @@ package com.project.controller;
 
 import com.project.domain.dto.Error;
 import com.project.domain.dto.ListResult;
-import com.project.domain.dto.ResponseAnime;
 import com.project.domain.model.Anime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.project.repository.AnimeRepository;
 

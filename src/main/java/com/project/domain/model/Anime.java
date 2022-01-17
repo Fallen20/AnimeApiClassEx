@@ -33,13 +33,13 @@ public class Anime {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="genres_movie_relation", joinColumns = @JoinColumn(name="animeid"), inverseJoinColumns = @JoinColumn(name = "genreid"))
     @JsonIgnoreProperties("animes")
-    public Set<Genres> genres;
+    public Set<Genre> genres;
 
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="fav_animes_from_user", joinColumns = @JoinColumn(name="animeid"), inverseJoinColumns = @JoinColumn(name = "userid"))
     @JsonIgnoreProperties("favourites")
-    public Set<Users> favouritedBy;//si le pones solo user te confundes porque pueden haber +1
+    public Set<User> favouritedBy;//si le pones solo user te confundes porque pueden haber +1
 
 }
 

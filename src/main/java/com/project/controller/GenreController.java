@@ -2,7 +2,6 @@ package com.project.controller;
 
 import com.project.domain.dto.Error;
 import com.project.domain.dto.ListResult;
-import com.project.domain.model.Genres;
 import com.project.domain.model.projection.ProjectionGenresLimited;
 import com.project.domain.model.projection.ProjectionGenresLimitedId;
 import com.project.repository.GenresRespository;
