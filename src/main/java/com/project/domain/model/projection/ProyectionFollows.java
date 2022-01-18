@@ -1,7 +1,13 @@
 package com.project.domain.model.projection;
 
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Set;
 
 public interface ProyectionFollows {
-    UUID getUsers_followed();
+    String getUsername();
+
+
+    @JsonIgnoreProperties("follows")
+    Set<ProyectionUser> getUser();
 }

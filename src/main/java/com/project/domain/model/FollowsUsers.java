@@ -18,4 +18,6 @@ public class FollowsUsers {
     @Id
     public UUID users_followed;
 
+
+
 }

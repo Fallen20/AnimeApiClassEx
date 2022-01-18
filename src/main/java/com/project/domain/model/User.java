@@ -20,13 +20,43 @@ public class User {
     @JsonIgnoreProperties("favouritedBy")
     public Set<Anime> favourites;
 
+
+
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="user_follows", joinColumns = @JoinColumn(name="actual_user"), inverseJoinColumns = @JoinColumn(name = "users_followed"))
-    @JsonIgnoreProperties("user_follows")
+    //@JsonIgnoreProperties("followsUser")
     public Set<User> follows;
 
-    @ManyToMany(mappedBy = "follows")
+
+
+
+    //funciona pero no saca lo que queremos
+/*
+*con esto funciona solo
+* @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="user_follows", joinColumns = @JoinColumn(name="actual_user"), inverseJoinColumns = @JoinColumn(name = "users_followed"))
+    //@JsonIgnoreProperties("followsUser")
+    public Set<User> follows;
+*
+* */
+
+
+/*
+funciona en conjunto
+*  @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="user_follows", joinColumns = @JoinColumn(name="actual_user"), inverseJoinColumns = @JoinColumn(name = "users_followed"))
+    @JsonIgnoreProperties("followsUser")
+    public Set<User> follows;
+
+
+
+    @OneToMany(mappedBy = "follows")
     @JsonIgnoreProperties("follows")
-    public Set<User> user_follows;
+    public Set<User> followsUser;
+*
+* */
+
+
 
 }

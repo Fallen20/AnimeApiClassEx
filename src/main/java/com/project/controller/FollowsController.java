@@ -88,7 +88,7 @@ public class FollowsController {
                     if(a.users_followed.equals(userToFollow.userid)){encontrado=true;}
                 }
 
-                if(encontrado){
+                if(encontrado){//si lo sigues
                     FollowsUsers newFollow=new FollowsUsers();
                     newFollow.actual_user=authenticatedUser.userid;
                     newFollow.users_followed=userToFollow.userid;
