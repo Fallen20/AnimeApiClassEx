@@ -3,6 +3,7 @@ package com.project.controller;
 import com.project.domain.dto.Error;
 import com.project.domain.dto.ListResult;
 import com.project.domain.model.Anime;
+import com.project.domain.model.projection.ProjectionAnimesAll;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class AnimeController {
 
     @GetMapping("/")
     public ResponseEntity<?> showAnimeJSON(){//devuelve la lista pero en JSON
-        return ResponseEntity.ok().body(new ListResult(animeRepository.findAll()));
+        return ResponseEntity.ok().body(new ListResult(animeRepository.findBy(ProjectionAnimesAll.class)));
     }//get /anime/ > devuelve la lista de animes
 
     @GetMapping("/{id}")

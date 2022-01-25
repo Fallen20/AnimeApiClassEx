@@ -10,7 +10,9 @@ import java.util.UUID;
 @Table(name="comment")
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public UUID commentid;//esto no se va a repetir
+
     public String comentario;
 
     @ManyToMany(cascade = CascadeType.ALL)

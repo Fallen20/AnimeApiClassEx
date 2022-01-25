@@ -4,17 +4,15 @@ import java.io.Serializable;
 import java.util.UUID;
 
 
-public class AnimeUserCommentId implements Serializable {
+public class AnimeCommentsId implements Serializable {
     public UUID commentid;
-    public UUID userid;
     public UUID animeid;
 
 
-    public AnimeUserCommentId(){}
+    public AnimeCommentsId(){}
 
-    public AnimeUserCommentId(UUID commentid, UUID userid, UUID animeid) {
+    public AnimeCommentsId(UUID commentid, UUID animeid) {
         this.commentid = commentid;
-        this.userid = userid;
         this.animeid = animeid;
     }
 }
