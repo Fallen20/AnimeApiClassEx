@@ -1,6 +1,6 @@
 package com.project.domain.model;
 
-import com.project.domain.model.keys.FavouriteIdClass;
+import com.project.domain.model.keys.AnimeUserDoubleId;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,13 +10,12 @@ import java.util.UUID;
 
 @Entity
 @Table(name="fav_animes_from_user")
-@IdClass(FavouriteIdClass.class)
+@IdClass(AnimeUserDoubleId.class)
 public class Favourite {
 
     @Id
     public UUID userid;
     @Id
     public UUID animeid;
-
 
 }

@@ -41,5 +41,10 @@ public class Anime {
     @JsonIgnoreProperties("favourites")
     public Set<User> favouritedBy;//si le pones solo user te confundes porque pueden haber +1
 
+
+    @ManyToMany(mappedBy = "commentedAnime")
+    @JsonIgnoreProperties("commentedAnime")
+    public Set<Comment> comments;
+
 }
 

@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.UUID;
 
 
-public class FavouriteIdClass implements Serializable {
+public class AnimeUserDoubleId implements Serializable {
     public UUID userid;
     public UUID animeid;
 
-    public FavouriteIdClass(){}
+    public AnimeUserDoubleId(){}
 
-    public FavouriteIdClass(UUID userid, UUID animeid) {
+    public AnimeUserDoubleId(UUID userid, UUID animeid) {
         this.userid = userid;
         this.animeid = animeid;
     }
