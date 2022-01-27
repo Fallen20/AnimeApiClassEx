@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,7 +38,7 @@ public class CommentController {
     //comentarios de TODOS los usuario
     //users/comments
     @GetMapping("/users/")
-    public ResponseEntity<?> showAllUsersComments(){
+    public ResponseEntity<?> showAllUsersComments() {
 
         return ResponseEntity.ok().body(new ListResult(userRepository.findBy(ProjectionUserComments.class)));
         //findAll te saca la contra tambien
@@ -45,75 +47,84 @@ public class CommentController {
 
     //comentarios de UN usuario
     //{userid}/comments
-    @GetMapping("/users/{userid}")
-    public ResponseEntity<?> showEspecificUsersComments(@PathVariable UUID userid, Authentication authentication){
+    @GetMapping("/users/{nombre}/")
+    public ResponseEntity<?> showEspecificUsersComments(@PathVariable String nombre, Authentication authentication) {
 
-        if( authentication.getName() != null) {
-            User usuario = userRepository.findById(userid).orElse(null);
+        if (authentication.getName() != null) {
+            User usuario = userRepository.findByUsername(nombre);
 
-            if (usuario != null) {return ResponseEntity.ok().body(userRepository.findByUserid(userid, ProjectionIndividualUserComments.class));}
-            else{return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No se ha encontrado el usuario con id '"+userid+"'"));}
+            if (usuario != null) {
+                return ResponseEntity.ok().body(userRepository.findByUserid(usuario.userid, ProjectionIndividualUserComments.class));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No se ha encontrado el usuario con el nombre '" + nombre + "'"));
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Se ha de estar autorizado para hacer esta operación"));
         }
-        else{return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Se ha de estar autorizado para hacer esta operación"));}
 
     }
 
     //comentarios de un anime
     //{animeid}/comments
 
-    @GetMapping("/anime/{animeid}/")
-    public ResponseEntity<?> showOneAnimeComments(@PathVariable UUID animeid){
-        Anime anime=animeRepository.findById(animeid).orElse(null);
-        if(anime==null){return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No se ha encontrado el anime con id '"+animeid+"'"));}
-        else{return ResponseEntity.ok().body(new ListResult(animeRepository.findByAnimeid(animeid,ProjectionAnimeUserComments.class)));}
+    @GetMapping("/animes/{animeid}/")
+    public ResponseEntity<?> showOneAnimeComments(@PathVariable UUID animeid) {
+        Anime anime = animeRepository.findById(animeid).orElse(null);
+        if (anime == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("No se ha encontrado el anime con id '" + animeid + "'"));
+        } else {
+            return ResponseEntity.ok().body(new ListResult(animeRepository.findByAnimeid(animeid, ProjectionAnimeUserComments.class)));
+        }
 
     }
 
 
     //comentarios de TODOS los animes
     //animes/comments
-    @GetMapping("/comments/animes/")
-    public ResponseEntity<?> showAllAnimeComments(){
+    @GetMapping("/animes/")
+    public ResponseEntity<?> showAllAnimeComments() {
         return ResponseEntity.ok().body(new ListResult(animeRepository.findBy(ProjectionAnimeUserComments.class)));
     }
 
     //POST
     //usuario pone un comentrio a un anime
     //{animeid}/comment; autenticado
-    @PostMapping("/{animeid}/comment/")
-    public ResponseEntity<?> addComment(@PathVariable UUID animeid, @RequestBody RequestComment requestComment, Authentication authentication){
+    @PostMapping("/animes/{animeid}/")
+    public ResponseEntity<?> addComment(@PathVariable UUID animeid, @RequestBody RequestComment requestComment, Authentication authentication) {
         //miramos si esta autenticado
-        if(authentication.getName()!=null){
+        if (authentication.getName() != null) {
             //miramos si existe el anime
 
-            boolean existeAnime=false;
-            for(Anime a : animeRepository.findAll()){
-                if (a.animeid.equals(animeid)){existeAnime=true;}
+            boolean existeAnime = false;
+            for (Anime a : animeRepository.findAll()) {
+                if (a.animeid.equals(animeid)) {
+                    existeAnime = true;
+                }
             }
 
-            if(existeAnime==true){
+            if (existeAnime == true) {
 
                 //nuevo comentario
-                Comment comment=new Comment();
-                comment.comentario= requestComment.comentario;
+                Comment comment = new Comment();
+                comment.comentario = requestComment.comentario;
 
                 commentRepository.save(comment);//sino lo guardas antes de hacer lo demas no genera el id
 
                 //recuperamos user y anime
                 User authenticatedUser = userRepository.findByUsername(authentication.getName());
-                Anime anime=animeRepository.findByAnimeid(animeid);
+                Anime anime = animeRepository.findByAnimeid(animeid);
 
 
                 //el comentario y el usuario
-                CommentUser commentUser=new CommentUser();
-                commentUser.commentid=comment.commentid;
-                commentUser.userid=authenticatedUser.userid;
+                CommentUser commentUser = new CommentUser();
+                commentUser.commentid = comment.commentid;
+                commentUser.userid = authenticatedUser.userid;
 
 
                 //el comentario y el anime
-                CommentAnime commentAnime=new CommentAnime();
-                commentAnime.animeid=anime.animeid;
-                commentAnime.commentid=comment.commentid;
+                CommentAnime commentAnime = new CommentAnime();
+                commentAnime.animeid = anime.animeid;
+                commentAnime.commentid = comment.commentid;
 
                 //guardamos
                 //guardas el comentario
@@ -121,71 +132,172 @@ public class CommentController {
                 animeCommentRepository.save(commentAnime);
 
                 return ResponseEntity.status(HttpStatus.OK).body(Error.message("Creado con exito"));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("El anime con id " + animeid + " no existe"));
             }
-            else{return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("El anime con id "+animeid+" no existe"));}
 
 
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Debes estar logeado para hacer esta accion"));
         }
-        else{return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Debes estar logeado para hacer esta accion"));}
     }
 
 
     //DEL
     //usuario quiere borrar un comentario suyo de un anime
     //{commentid}
-    @DeleteMapping("/{commentid}/comment/")
-    public ResponseEntity<?> deleteOneComment(@PathVariable UUID commentid, Authentication authentication){
+    @DeleteMapping("/{commentid}/")
+    public ResponseEntity<?> deleteOneComment(@PathVariable UUID commentid, Authentication authentication) {
         //mira esta logeado
-        if(authentication.getName()!=null){
-            boolean existeComment=false;
-            //busca si existe ese comentario
-            for(Comment a: commentRepository.findAll()){
-                if(a.commentid.equals(commentid)){existeComment=true;}
+        boolean mismoUser = false;
+        if (authentication.getName() != null) {
+            //mirar si es el mismo user del comentario
+            for (Comment a : commentRepository.findAll()) {
+                for (User b : a.commentedUser) {
+                    if (b.username.equals(authentication.getName())) {
+                        mismoUser = true;
+                    }
+                }
             }
 
-            if(existeComment){
-                Comment commentEncontrado=commentRepository.findByCommentid(commentid);
-                User authenticatedUser = userRepository.findByUsername(authentication.getName());
-                Anime anime=null;
-
-                for(Anime a :animeRepository.findAll()){
-                    for (Comment comment : a.comments) {
-                        if(comment.commentid.equals(commentid)){anime=a;}
+            if (mismoUser) {
+                boolean existeComment = false;
+                //busca si existe ese comentario
+                for (Comment a : commentRepository.findAll()) {
+                    if (a.commentid.equals(commentid)) {
+                        existeComment = true;
                     }
-
                 }
 
-                CommentUser commentUser=new CommentUser();
-                commentUser.commentid=commentEncontrado.commentid;
-                commentUser.userid=authenticatedUser.userid;
+                if (existeComment) {
+                    Comment commentEncontrado = commentRepository.findByCommentid(commentid);
+                    User authenticatedUser = userRepository.findByUsername(authentication.getName());
+                    Anime anime = null;
+
+                    for (Anime a : animeRepository.findAll()) {
+                        for (Comment comment : a.comments) {
+                            if (comment.commentid.equals(commentid)) {
+                                anime = a;
+                            }
+                        }
+
+                    }
+
+                    CommentUser commentUser = new CommentUser();
+                    commentUser.commentid = commentEncontrado.commentid;
+                    commentUser.userid = authenticatedUser.userid;
 
 
-                //el comentario y el anime
-                CommentAnime commentAnime=new CommentAnime();
-                commentAnime.animeid=anime.animeid;
-                commentAnime.commentid=commentEncontrado.commentid;
+                    //el comentario y el anime
+                    CommentAnime commentAnime = new CommentAnime();
+                    commentAnime.animeid = anime.animeid;
+                    commentAnime.commentid = commentEncontrado.commentid;
 
 
-                commentRepository.delete(commentEncontrado);
-                animeCommentRepository.delete(commentAnime);
-                userCommentRepository.delete(commentUser);
+                    commentRepository.delete(commentEncontrado);
+                    animeCommentRepository.delete(commentAnime);
+                    userCommentRepository.delete(commentUser);
 
-                return ResponseEntity.status(HttpStatus.OK).body(Error.message("Borrado con exito"));
+                    return ResponseEntity.status(HttpStatus.OK).body(Error.message("Borrado con exito"));
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("El comentario con id " + commentid + " no existe"));
+                }
 
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Debes ser el propietario del comentario para poder borrar"));
             }
-            else{return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("El comentario con id "+commentid+" no existe"));}
 
 
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Debes estar logeado para hacer esta accion"));
         }
-        else{return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Debes estar logeado para hacer esta accion"));}
 
 
     }
 
     //usuario quiere borrar TODOS sus comentario de un anime
-    //{animeid}/comments
+    ///anime/{animeid}/
 
+    @DeleteMapping("/anime/{animeid}/")
+    public ResponseEntity<?> deleteAllAnimeComments(@PathVariable UUID animeid, Authentication authentication) {
+        //mira esta logeado
+        if (authentication.getName() != null) {
+
+            //mirar si existe el anime
+            Anime animeEncontrado = animeRepository.findByAnimeid(animeid);
+
+            if (animeEncontrado != null) {
+                User usuarioAutenticado = userRepository.findByUsername(authentication.getName());
+
+                List<UUID> commentsid = new ArrayList<>();
+
+
+                for (CommentUser a : userCommentRepository.findAll()) {
+                    if (a.userid.equals(usuarioAutenticado.userid)) {commentsid.add(a.commentid);}
+                }
+
+
+
+                for (Comment a : commentRepository.findAll()) {
+
+                        for(User b:a.commentedUser){
+                            if (a.commentedAnime.contains(animeEncontrado)
+                                    && commentsid.contains(a.commentid)
+                                    && b.userid.equals(usuarioAutenticado.userid)) {
+                                commentRepository.delete(a);
+                        }
+
+                    }
+
+                }
+
+                return ResponseEntity.status(HttpStatus.OK).body(Error.message("Se han borrado los comentarios del anime "+animeid+" con éxito"));
+
+                ///el ultimo comment
+
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Error.message("El anime con id" + animeid + " no existe"));
+            }
+
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Debes estar logeado para hacer esta accion"));
+        }
+
+
+    }
     //usuario quiere borrar TODOD sus comentarios
-    //comments/
+    ///users/
+    @DeleteMapping("/user/")
+    public ResponseEntity<?> deleteAllUserComments(Authentication authentication) {
+
+        if(authentication.getName()!=null){
+            boolean mismoUser=false;
+            for (Comment a : commentRepository.findAll()) {
+                for (User b : a.commentedUser) {
+                    if (b.username.equals(authentication.getName())) {
+                        mismoUser = true;
+                    }
+                }
+            }
+
+            if(mismoUser){
+                User usuarioAutenticado = userRepository.findByUsername(authentication.getName());
+
+
+                for (Comment a : commentRepository.findAll()) {
+                    if(a.commentedUser.contains(usuarioAutenticado)){commentRepository.delete(a);}
+                }
+
+                return ResponseEntity.status(HttpStatus.OK).body(Error.message("Borrado con éxito"));
+
+
+            }
+            else {return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Debes ser el propietario del comentario para poder borrar"));}
+
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Error.message("Debes estar logeado para hacer esta accion"));
+
+    }
+
 
 }

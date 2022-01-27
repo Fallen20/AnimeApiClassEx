@@ -15,12 +15,12 @@ public class Comment {
 
     public String comentario;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(name="comment_by_user",joinColumns = @JoinColumn(name="commentid"), inverseJoinColumns = @JoinColumn(name = "userid"))
     @JsonIgnoreProperties("userComments")
     public Set<User> commentedUser;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(name="commented_in_anime",joinColumns = @JoinColumn(name="commentid"), inverseJoinColumns = @JoinColumn(name = "animeid"))
     @JsonIgnoreProperties("comments")
     public Set<Anime> commentedAnime;
