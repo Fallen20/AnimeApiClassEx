@@ -14,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user/follows")//lo del final de la url
+@RequestMapping("/follows")//lo del final de la url
 public class FollowsController {
 
     private final FollowsRepository followedRepository;
