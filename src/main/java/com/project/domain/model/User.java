@@ -30,6 +30,9 @@ public class User {
     @JsonIgnoreProperties("commentedUser")
     public Set<Comment> userComments;
 
+    @ManyToMany(mappedBy = "miembros")
+    @JsonIgnoreProperties("miembros")
+    public Set<Grupos> grupo;
 
 
 

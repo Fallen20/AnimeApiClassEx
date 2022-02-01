@@ -41,3 +41,4 @@ INSERT INTO commented_in_anime VALUES
 
 INSERT INTO commented_in_anime VALUES
     ((SELECT commentid from comment where comentario='El de 2006 era mejor'), (SELECT animeid FROM anime WHERE name='Fullmetal Alchemist'));
+------------------------------------

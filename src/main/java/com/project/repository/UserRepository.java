@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     List<ProyectionUser> findBy();//en funcion del retorno devuelve una cosa u otra
 
     <T> List<T> findByUserid(UUID id, Class<T> type);//este metodo ya existe por defecto tienes que hacerlo generico para poder usarlo y devolver como quieres
+    User findByUserid(UUID id);
     <T> List<T> findBy(Class<T> type);
 
     User findByUsername(String username);
